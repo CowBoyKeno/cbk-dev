@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CBK Dev Menu</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div id="app" class="hidden">
+        <div class="panel">
+            <div class="header">
+                <div>
+                    <div class="eyebrow">Standalone dev toolkit</div>
+                    <h1 id="title">CBK Dev Menu</h1>
+                </div>
+                <button id="closeBtn" class="ghost">ESC</button>
+            </div>
+
+            <div class="grid">
+                <section class="card">
+                    <h2>Player</h2>
+                    <div class="toggle-list">
+                        <button class="toggle" data-toggle="playerGod">God Mode</button>
+                        <button class="toggle" data-toggle="invisible">Invisible</button>
+                        <button class="toggle" data-toggle="infiniteStamina">Infinite Stamina</button>
+                        <button class="toggle" data-toggle="superJump">Super Jump</button>
+                        <button class="toggle" data-toggle="neverWanted">Never Wanted</button>
+                        <button class="toggle" data-toggle="noclip">Noclip</button>
+                    </div>
+                    <div class="action-row">
+                        <button data-action="heal">Heal + Armour</button>
+                        <button data-action="tp_waypoint">Teleport to Waypoint</button>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h2>Vehicle</h2>
+                    <div class="toggle-list">
+                        <button class="toggle" data-toggle="vehicleGod">Vehicle God Mode</button>
+                    </div>
+                    <div class="stack">
+                        <label>Spawn vehicle by model name</label>
+                        <div class="input-row">
+                            <input id="vehicleModel" type="text" placeholder="adder, police3, buzzard2..." />
+                            <button data-action="spawn_vehicle">Spawn</button>
+                        </div>
+                    </div>
+                    <div class="action-row wrap">
+                        <button data-action="repair_vehicle">Repair</button>
+                        <button data-action="clean_vehicle">Clean</button>
+                        <button data-action="flip_vehicle">Flip</button>
+                        <button data-action="delete_vehicle">Delete</button>
+                        <button data-action="max_vehicle">Max Upgrade</button>
+                        <button data-action="engine_toggle">Engine On/Off</button>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h2>Weapons</h2>
+                    <div class="toggle-list">
+                        <button class="toggle" data-toggle="noReload">No Reload / Infinite Clip</button>
+                    </div>
+                    <div class="action-row wrap">
+                        <button data-action="give_weapons">Give All Weapons</button>
+                        <button data-action="refill_ammo">Refill Ammo</button>
+                        <button data-action="remove_weapons">Remove Weapons</button>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h2>Live Status</h2>
+                    <div class="status">
+                        <div><span>Area</span><strong id="area">-</strong></div>
+                        <div><span>X</span><strong id="coordX">0.00</strong></div>
+                        <div><span>Y</span><strong id="coordY">0.00</strong></div>
+                        <div><span>Z</span><strong id="coordZ">0.00</strong></div>
+                        <div><span>Heading</span><strong id="coordH">0.00</strong></div>
+                        <div><span>Vehicle</span><strong id="vehicleName">None</strong></div>
+                    </div>
+                    <div class="action-row">
+                        <button data-action="copy_coords">Copy vector4</button>
+                    </div>
+                    <p class="hint">Noclip controls: W/S/A/D move, Q up, E down, Shift fast, Ctrl slow.</p>
+                </section>
+            </div>
+        </div>
+        <div id="toast"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
