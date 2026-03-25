@@ -1,4 +1,4 @@
-# cbk-dev
+# cbk_devmenu
 
 Standalone FiveM development menu with an F1 NUI, built for private/dev servers.
 
@@ -22,12 +22,16 @@ Standalone FiveM development menu with an F1 NUI, built for private/dev servers.
 - Refill ammo
 - Remove all weapons
 - No reload / infinite clip
+- Weather presets
+- Time presets + custom time
+- Freeze time toggle
+- Blackout toggle
 - Live coordinates with one-click vector4 copy
 
 ## Install
 
-1. Put the `cbk-dev` folder into your `resources` folder.
-2. Add `ensure cbk-dev` to your server.cfg.
+1. Put the `cbk_devmenu` folder into your `resources` folder.
+2. Add `ensure cbk_devmenu` to your server.cfg.
 3. Restart the resource or server.
 4. Press `F1`.
 

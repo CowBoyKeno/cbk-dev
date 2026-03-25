@@ -1,4 +1,3 @@
-
 :root {
     --bg: rgba(12, 14, 20, 0.94);
     --card: rgba(22, 26, 35, 0.96);
@@ -7,14 +6,13 @@
     --muted: #8d97ab;
     --accent: #6aa8ff;
     --good: #3ccf91;
-    --shadow: 0 20px 80px rgba(0, 0, 0, 0.5);
 }
 
 * { box-sizing: border-box; }
 html, body {
     margin: 0;
     width: 100%;
-    height: 70%;
+    height: 100%;
     font-family: Inter, Segoe UI, Arial, sans-serif;
     color: var(--text);
     background: transparent;
@@ -35,12 +33,12 @@ body {
 }
 
 .panel {
-    width: 80%;
+    width: 100%;
     background: var(--bg);
-    border: 4px solid var(--border);
+    border: 1px solid var(--border);
     box-shadow: var(--shadow);
-    border-radius: 18px;
-    padding: 18px;
+    border-radius: 20px;
+    padding: 10px;
 }
 
 .header {
@@ -48,15 +46,15 @@ body {
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 
 .eyebrow {
     color: var(--accent);
     text-transform: uppercase;
     letter-spacing: 0.18em;
-    font-size: 10px;
-    margin-bottom: 2px;
+    font-size: 11px;
+    margin-bottom: 4px;
 }
 
 h1, h2 {
@@ -75,9 +73,9 @@ h2 { font-size: 18px; margin-bottom: 14px; }
 
 .card {
     background: var(--card);
-    border: 4px solid var(--border);
-    border-radius: 15px;
-    padding: 15px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 10px;
 }
 
 .toggle-list,
@@ -85,16 +83,16 @@ h2 { font-size: 18px; margin-bottom: 14px; }
 .input-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 0px;
+    gap: 10px;
 }
 
-.wrap { margin-top: 11px; }
+.wrap { margin-top: 4px; }
 
 .stack {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    margin-bottom: 2px;
+    gap: 8px;
+    margin-bottom: 12px;
 }
 
 label, .hint {
@@ -104,17 +102,18 @@ label, .hint {
 
 button,
 input {
-    border-radius: 15px;
+    border-radius: 20px;
     border: 4px solid var(--border);
-    font-size: 15px;
+    font-size: 18px;
 }
 
 button {
     background: rgba(255, 255, 255, 0.04);
     color: var(--text);
-    padding: 10px 20px;
+    padding: 10px 10px;
     cursor: pointer;
     transition: 0.16s ease;
+    margin-bottom: 10px;
 }
 
 button:hover {
@@ -135,7 +134,7 @@ button.ghost {
 input {
     flex: 1;
     min-width: 180px;
-    padding: 12px 14px;
+    padding: 10px 10px;
     background: rgba(255, 255, 255, 0.03);
     color: var(--text);
     outline: none;
@@ -145,14 +144,14 @@ input {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
 }
 
 .status div {
     background: rgba(255,255,255,0.03);
-    border-radius: 12px;
-    padding: 12px;
-    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 10px;
+    border: 4px solid var(--border);
 }
 
 .status span {
@@ -173,8 +172,8 @@ input {
     right: 4vh;
     background: rgba(15, 18, 26, 0.96);
     border: 1px solid var(--border);
-    padding: 12px 14px;
-    border-radius: 12px;
+    padding: 10px 10px;
+    border-radius: 20px;
     box-shadow: var(--shadow);
     display: none;
 }

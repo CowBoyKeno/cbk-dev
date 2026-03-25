@@ -69,9 +69,48 @@
                 </section>
 
                 <section class="card">
+                    <h2>Environment</h2>
+                    <div class="toggle-list">
+                        <button class="toggle" data-toggle="freezeTime">Freeze Time</button>
+                        <button class="toggle" data-toggle="blackout">Blackout</button>
+                    </div>
+                    <div class="stack">
+                        <label>Weather presets</label>
+                        <div class="action-row wrap compact">
+                            <button data-action="set_weather" data-value="CLEAR">Clear</button>
+                            <button data-action="set_weather" data-value="EXTRASUNNY">Extra Sunny</button>
+                            <button data-action="set_weather" data-value="CLOUDS">Clouds</button>
+                            <button data-action="set_weather" data-value="OVERCAST">Overcast</button>
+                            <button data-action="set_weather" data-value="RAIN">Rain</button>
+                            <button data-action="set_weather" data-value="THUNDER">Thunder</button>
+                            <button data-action="set_weather" data-value="FOGGY">Foggy</button>
+                            <button data-action="set_weather" data-value="SMOG">Smog</button>
+                            <button data-action="set_weather" data-value="XMAS">Xmas</button>
+                            <button data-action="set_weather" data-value="HALLOWEEN">Halloween</button>
+                        </div>
+                    </div>
+                    <div class="stack">
+                        <label>Time presets</label>
+                        <div class="action-row wrap compact">
+                            <button data-action="set_time_preset" data-hour="8" data-minute="0">Morning</button>
+                            <button data-action="set_time_preset" data-hour="12" data-minute="0">Noon</button>
+                            <button data-action="set_time_preset" data-hour="18" data-minute="0">Evening</button>
+                            <button data-action="set_time_preset" data-hour="0" data-minute="0">Midnight</button>
+                        </div>
+                        <div class="input-row">
+                            <input id="timeHour" type="number" min="0" max="23" placeholder="HH" />
+                            <input id="timeMinute" type="number" min="0" max="59" placeholder="MM" />
+                            <button data-action="set_time_custom">Set Time</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card">
                     <h2>Live Status</h2>
                     <div class="status">
                         <div><span>Area</span><strong id="area">-</strong></div>
+                        <div><span>Weather</span><strong id="weatherName">CLEAR</strong></div>
+                        <div><span>Time</span><strong id="clockTime">12:00</strong></div>
                         <div><span>X</span><strong id="coordX">0.00</strong></div>
                         <div><span>Y</span><strong id="coordY">0.00</strong></div>
                         <div><span>Z</span><strong id="coordZ">0.00</strong></div>
@@ -81,7 +120,7 @@
                     <div class="action-row">
                         <button data-action="copy_coords">Copy vector4</button>
                     </div>
-                    <p class="hint">Noclip controls: W/S/A/D move, Q up, E down, Shift fast, Ctrl slow.</p>
+                    <p class="hint">Noclip controls: W/S/A/D move, Q up, E down, Shift fast, Ctrl slow, ESC exits.</p>
                 </section>
             </div>
         </div>

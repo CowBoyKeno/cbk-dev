@@ -10,6 +10,26 @@ Config.NoclipSpeed = 1.5
 Config.NoclipFastMultiplier = 3.5
 Config.NoclipSlowMultiplier = 0.35
 
+Config.WeatherPresets = {
+    { label = 'Clear', value = 'CLEAR' },
+    { label = 'Extra Sunny', value = 'EXTRASUNNY' },
+    { label = 'Clouds', value = 'CLOUDS' },
+    { label = 'Overcast', value = 'OVERCAST' },
+    { label = 'Rain', value = 'RAIN' },
+    { label = 'Thunder', value = 'THUNDER' },
+    { label = 'Foggy', value = 'FOGGY' },
+    { label = 'Smog', value = 'SMOG' },
+    { label = 'Xmas', value = 'XMAS' },
+    { label = 'Halloween', value = 'HALLOWEEN' },
+}
+
+Config.TimePresets = {
+    { label = 'Morning', hour = 8, minute = 0 },
+    { label = 'Noon', hour = 12, minute = 0 },
+    { label = 'Evening', hour = 18, minute = 0 },
+    { label = 'Midnight', hour = 0, minute = 0 },
+}
+
 Config.Weapons = {
     'WEAPON_KNIFE',
     'WEAPON_NIGHTSTICK',

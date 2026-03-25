@@ -1,4 +1,3 @@
-
 local state = {
     menuOpen = false,
     playerGod = false,
@@ -8,7 +7,12 @@ local state = {
     infiniteStamina = false,
     superJump = false,
     neverWanted = false,
-    noclip = false
+    noclip = false,
+    blackout = false,
+    freezeTime = false,
+    currentWeather = 'CLEAR',
+    timeHour = 12,
+    timeMinute = 0
 }
 
 local currentNoclipSpeed = Config.NoclipSpeed
@@ -81,6 +85,20 @@ local function setMenu(open)
             data = state
         })
     end
+end
+
+local function applyWeather()
+    ClearOverrideWeather()
+    ClearWeatherTypePersist()
+    SetWeatherTypeNowPersist(state.currentWeather)
+    SetWeatherTypeNow(state.currentWeather)
+    SetOverrideWeather(state.currentWeather)
+    notify(('~b~Weather: ~w~%s'):format(state.currentWeather))
+end
+
+local function applyTime()
+    NetworkOverrideClockTime(state.timeHour, state.timeMinute, 0)
+    notify(('~b~Time: ~w~%02d:%02d'):format(state.timeHour, state.timeMinute))
 end
 
 local function repairVehicle(vehicle)
@@ -231,7 +249,6 @@ local function teleportToWaypoint()
     end
 
     local coords = GetBlipInfoIdCoord(waypoint)
-    local ped = PlayerPedId()
     local entity, isVehicle = getControlledEntity()
 
     for height = 1, 1000 do
@@ -292,6 +309,11 @@ local function gatherStatus()
         superJump = state.superJump,
         neverWanted = state.neverWanted,
         noclip = state.noclip,
+        blackout = state.blackout,
+        freezeTime = state.freezeTime,
+        currentWeather = state.currentWeather,
+        timeHour = state.timeHour,
+        timeMinute = state.timeMinute,
         coords = {
             x = math.floor(coords.x * 100.0 + 0.5) / 100.0,
             y = math.floor(coords.y * 100.0 + 0.5) / 100.0,
@@ -314,6 +336,7 @@ RegisterNUICallback('toggle', function(data, cb)
     local key = data and data.key or nil
     if key and state[key] ~= nil then
         state[key] = not state[key]
+        local shouldNotify = true
 
         if key == 'invisible' then
             SetEntityVisible(PlayerPedId(), not state.invisible, false)
@@ -322,10 +345,19 @@ RegisterNUICallback('toggle', function(data, cb)
             SetEntityInvincible(PlayerPedId(), state.playerGod)
         elseif key == 'noclip' then
             setNoclipEnabled(state.noclip)
+            shouldNotify = false
+            if state.noclip and state.menuOpen then
+                setMenu(false)
+            end
+        elseif key == 'blackout' then
+            SetArtificialLightsState(state.blackout)
+            SetArtificialLightsStateAffectsVehicles(false)
         end
 
         SendNUIMessage({ action = 'setState', data = state })
-        notify(('~b~%s: ~w~%s'):format(key, state[key] and 'ON' or 'OFF'))
+        if shouldNotify then
+            notify(('~b~%s: ~w~%s'):format(key, state[key] and 'ON' or 'OFF'))
+        end
     end
 
     cb({ ok = true, state = state })
@@ -370,6 +402,20 @@ RegisterNUICallback('action', function(data, cb)
         refillAmmo()
     elseif name == 'remove_weapons' then
         removeWeapons()
+    elseif name == 'set_weather' then
+        local weather = tostring(data.value or 'CLEAR'):upper()
+        state.currentWeather = weather
+        applyWeather()
+    elseif name == 'set_time' then
+        local hour = tonumber(data.hour)
+        local minute = tonumber(data.minute)
+        if hour == nil or minute == nil then
+            notify('~r~Invalid time.')
+        else
+            state.timeHour = math.max(0, math.min(23, math.floor(hour)))
+            state.timeMinute = math.max(0, math.min(59, math.floor(minute)))
+            applyTime()
+        end
     elseif name == 'copy_coords' then
         SendNUIMessage({
             action = 'copyCoords',
@@ -382,7 +428,7 @@ RegisterNUICallback('action', function(data, cb)
         })
     end
 
-    cb({ ok = true })
+    cb({ ok = true, state = gatherStatus() })
 end)
 
 RegisterNUICallback('getStatus', function(_, cb)
@@ -396,6 +442,9 @@ end, false)
 RegisterKeyMapping(Config.KeybindCommand, Config.KeybindDescription, 'keyboard', Config.DefaultKey)
 
 CreateThread(function()
+    applyWeather()
+    applyTime()
+
     while true do
         local waitTime = 500
 
@@ -405,6 +454,9 @@ CreateThread(function()
             SetEntityInvincible(ped, true)
             SetPedCanRagdoll(ped, false)
             SetEntityProofs(ped, true, true, true, true, true, true, true, true)
+        else
+            SetPedCanRagdoll(PlayerPedId(), true)
+            SetEntityProofs(PlayerPedId(), false, false, false, false, false, false, false, false)
         end
 
         if state.vehicleGod then
@@ -435,7 +487,6 @@ CreateThread(function()
         if state.noReload then
             local ped = PlayerPedId()
             SetPedInfiniteAmmoClip(ped, true)
-            DisablePlayerFiring(PlayerId(), false)
             local _, weaponHash = GetCurrentPedWeapon(ped, true)
             if weaponHash and weaponHash ~= 0 then
                 SetPedAmmo(ped, weaponHash, 9999)
@@ -459,9 +510,18 @@ CreateThread(function()
             SetMaxWantedLevel(5)
         end
 
+        if state.freezeTime then
+            NetworkOverrideClockTime(state.timeHour, state.timeMinute, 0)
+        end
+
+        if state.blackout then
+            SetArtificialLightsState(true)
+            SetArtificialLightsStateAffectsVehicles(false)
+        end
+
         if state.noclip then
             waitTime = 0
-            local entity, _ = getControlledEntity()
+            local entity = getControlledEntity()
             local camRot = GetGameplayCamRot(2)
             local camDir = rotationToDirection(camRot)
             local pos = GetEntityCoords(entity)
@@ -500,7 +560,7 @@ CreateThread(function()
 
             HideHudAndRadarThisFrame()
             drawText(0.015, 0.78, ('Noclip | Speed %.2f'):format(speed), 0.35)
-            drawText(0.015, 0.805, 'W/S Forward/Back | A/D Left/Right | Q/E Up/Down | Shift Fast | Ctrl Slow', 0.30)
+            drawText(0.015, 0.805, 'W/S Forward/Back | A/D Left/Right | Q/E Up/Down | Shift Fast | Ctrl Slow | ESC Exit', 0.30)
 
             DisableControlAction(0, 32, true)
             DisableControlAction(0, 33, true)
@@ -510,6 +570,12 @@ CreateThread(function()
             DisableControlAction(0, 38, true)
             DisableControlAction(0, 21, true)
             DisableControlAction(0, 36, true)
+            DisableControlAction(0, 200, true)
+            DisableControlAction(0, 322, true)
+
+            if IsDisabledControlJustPressed(0, 200) or IsDisabledControlJustPressed(0, 322) then
+                setNoclipEnabled(false)
+            end
         end
 
         Wait(waitTime)
@@ -541,7 +607,11 @@ AddEventHandler('onResourceStop', function(resourceName)
     SetPlayerInvincible(PlayerId(), false)
     SetEntityInvincible(PlayerPedId(), false)
     SetPedCanRagdoll(PlayerPedId(), true)
+    SetEntityProofs(PlayerPedId(), false, false, false, false, false, false, false, false)
     SetMaxWantedLevel(5)
+    ClearOverrideWeather()
+    ClearWeatherTypePersist()
+    SetArtificialLightsState(false)
 
     local ped = PlayerPedId()
     SetEntityVisible(ped, true, false)
