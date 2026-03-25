@@ -1,4 +1,4 @@
-# cbk_devmenu
+# CBK DEV PANEL #
 
 Standalone FiveM development menu with an F1 NUI, built for private/dev servers.
 
